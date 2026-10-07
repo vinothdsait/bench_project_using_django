@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Employee Management</title>
+</head>
+<body>
+
+<h1>Employee Management</h1>
+
+<p>
+    Welcome, {{ user.username }}!
+</p>
+
+<form method="POST" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit">
+        Logout
+    </button>
+</form>
+
+<br>
+
+{% if is_staff_role %}
+    <a href="{% url 'employee_create' %}">
+        Add Employee
+    </a>
+{% endif %}
+
+<br><br>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>Employee ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Department</th>
+            <th>Designation</th>
+            <th>Salary</th>
+            <th>Joining Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for employee in employees %}
+        <tr>
+            <td>{{ employee.employee_id }}</td>
+            <td>{{ employee.name }}</td>
+            <td>{{ employee.email }}</td>
+            <td>{{ employee.phone }}</td>
+            <td>{{ employee.department }}</td>
+            <td>{{ employee.designation }}</td>
+            <td>{{ employee.salary }}</td>
+            <td>{{ employee.joining_date }}</td>
+            <td>
+                {% if is_staff_role %}
+                    <a href="{% url 'employee_update' employee.id %}">
+                        Edit
+                    </a>
+
+                    |
+
+                    <a href="{% url 'employee_delete' employee.id %}">
+                        Delete
+                    </a>
+                {% endif %}
+            </td>
+
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="9">
+                No employees found.
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+</body>
+</html>
+
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>My Employee Details</title>
+</head>
+
+<body>
+
+<h1>My Employee Details</h1>
+
+<p>Employee ID: {{ employee.employee_id }}</p>
+<p>Name: {{ employee.name }}</p>
+<p>Email: {{ employee.email }}</p>
+<p>Phone: {{ employee.phone }}</p>
+<p>Department: {{ employee.department }}</p>
+<p>Designation: {{ employee.designation }}</p>
+<p>Salary: {{ employee.salary }}</p>
+<p>Joining Date: {{ employee.joining_date }}</p>
+
+</body>
+</html> -->
